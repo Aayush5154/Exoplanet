@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exoplanet Prediction Model</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background-color: #0c0c24;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .card {
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #a0c4ff;
+        }
+        .upload-area {
+            border: 2px dashed #4a4a70;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .upload-area:hover {
+            background-color: #1e1e3c;
+        }
+        button {
+            background-color: #4a69bd;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background-color: #6a89cc;
+        }
+        .error {
+            color: #ff6b6b;
+            margin-top: 1rem;
+        }
+        .summary {
+            font-size: 1.2rem;
+            color: #a0c4ff;
+            font-weight: bold;
+        }
+        .chart-container {
+            margin-top: 2rem;
+        }
+        #plotly-chart {
+            width: 100%;
+            height: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Exoplanet Detection</h1>
+            <p>Using your custom-trained XGBoost Model</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <h2>Upload KOI Data File</h2>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                    <p id="fileText">Click here or drag & drop your 'KOI_cumulative...' CSV file</p>
+                </div>
+                <button id="analyzeBtn" onclick="analyzeData()" disabled>
+                    Analyze Data
+                </button>
+            </div>
+
+            <div id="errorDiv" class="card" style="display: none;">
+                <p class="error" id="errorMessage"></p>
+            </div>
+
+            <div id="resultsDiv" class="card" style="display: none;">
+                <h2>Analysis Results</h2>
+                <p class="summary" id="summaryText"></p>
+                <div class="chart-container">
+                    <div id="plotly-chart"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:5000';
+        let selectedFile = null;
+
+        // File input handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                document.getElementById('fileText').textContent = file.name;
+                document.getElementById('analyzeBtn').disabled = false;
+                hideResults();
+            }
+        });
+
+        // Drag and drop handling
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '#1e1e3c';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    selectedFile = file;
+                    document.getElementById('fileText').textContent = file.name;
+                    document.getElementById('analyzeBtn').disabled = false;
+                    hideResults();
+                } else {
+                    showError('Please select a CSV file.');
+                }
+            }
+        });
+
+        function analyzeData() {
+            if (!selectedFile) {
+                showError('Please upload a CSV file first.');
+                return;
+            }
+
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = 'Analyzing...';
+            hideResults();
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            fetch(`${API_URL}/predict_csv`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    showResults(data);
+                }
+            })
+            .catch(error => {
+                showError('An error occurred: ' + error.message);
+            })
+            .finally(() => {
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze Data';
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorDiv').style.display = 'block';
+            document.getElementById('resultsDiv').style.display = 'none';
+        }
+
+        function showResults(data) {
+            document.getElementById('summaryText').textContent = data.summary;
+            
+            if (data.chart_data && data.chart_layout) {
+                const layout = {
+                    ...data.chart_layout,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: '#1e1e3c',
+                    font: { color: 'white' }
+                };
+                
+                Plotly.newPlot('plotly-chart', [data.chart_data], layout, {responsive: true});
+            }
+            
+            document.getElementById('errorDiv').style.display = 'none';
+            document.getElementById('resultsDiv').style.display = 'block';
+        }
+
+        function hideResults() {
+            document.getElementById('errorDiv').style.display = 'none';
+            document.getElementById('resultsDiv').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+

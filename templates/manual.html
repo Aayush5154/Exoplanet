@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}Manual Input - Exoplanet Prediction Model{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mb-4">
+                    <i class="fas fa-keyboard me-2"></i>Manual Data Entry
+                </h2>
+                <p class="text-muted mb-4">Enter the KOI features to predict if it is a confirmed exoplanet. All fields are pre-filled with suggested values.</p>
+                
+                <form id="manualForm" method="POST" action="/predict_manual">
+                    <div class="row">
+                        <!-- Basic Parameters -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-line me-2"></i>Basic Parameters
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="koi_score" class="form-label">Disposition Score</label>
+                                <input type="number" class="form-control" id="koi_score" name="koi_score" 
+                                       value="0.334" step="any" placeholder="0.334">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_fpflag_nt" class="form-label">Not Transit-Like False Positive Flag</label>
+                                <input type="number" class="form-control" id="koi_fpflag_nt" name="koi_fpflag_nt" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_fpflag_ss" class="form-label">Stellar Eclipse False Positive Flag</label>
+                                <input type="number" class="form-control" id="koi_fpflag_ss" name="koi_fpflag_ss" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_fpflag_co" class="form-label">Centroid Offset False Positive Flag</label>
+                                <input type="number" class="form-control" id="koi_fpflag_co" name="koi_fpflag_co" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_fpflag_ec" class="form-label">Ephemeris Contamination False Positive Flag</label>
+                                <input type="number" class="form-control" id="koi_fpflag_ec" name="koi_fpflag_ec" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_period" class="form-label">Orbital Period [days]</label>
+                                <input type="number" class="form-control" id="koi_period" name="koi_period" 
+                                       value="9.753" step="any" placeholder="9.753">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_period_err1" class="form-label">Orbital Period Upper Unc. [days]</label>
+                                <input type="number" class="form-control" id="koi_period_err1" name="koi_period_err1" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_period_err2" class="form-label">Orbital Period Lower Unc. [days]</label>
+                                <input type="number" class="form-control" id="koi_period_err2" name="koi_period_err2" 
+                                       value="-0.000" step="any" placeholder="-0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_time0bk" class="form-label">Transit Epoch [BKJD]</label>
+                                <input type="number" class="form-control" id="koi_time0bk" name="koi_time0bk" 
+                                       value="137.225" step="any" placeholder="137.225">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_time0bk_err1" class="form-label">Transit Epoch Upper Unc. [BKJD]</label>
+                                <input type="number" class="form-control" id="koi_time0bk_err1" name="koi_time0bk_err1" 
+                                       value="0.004" step="any" placeholder="0.004">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_time0bk_err2" class="form-label">Transit Epoch Lower Unc. [BKJD]</label>
+                                <input type="number" class="form-control" id="koi_time0bk_err2" name="koi_time0bk_err2" 
+                                       value="-0.004" step="any" placeholder="-0.004">
+                            </div>
+                        </div>
+                        
+                        <!-- Advanced Parameters -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">
+                                <i class="fas fa-cogs me-2"></i>Advanced Parameters
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <label for="koi_impact" class="form-label">Impact Parameter</label>
+                                <input type="number" class="form-control" id="koi_impact" name="koi_impact" 
+                                       value="0.537" step="any" placeholder="0.537">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_impact_err1" class="form-label">Impact Parameter Upper Unc.</label>
+                                <input type="number" class="form-control" id="koi_impact_err1" name="koi_impact_err1" 
+                                       value="0.193" step="any" placeholder="0.193">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_impact_err2" class="form-label">Impact Parameter Lower Unc.</label>
+                                <input type="number" class="form-control" id="koi_impact_err2" name="koi_impact_err2" 
+                                       value="-0.207" step="any" placeholder="-0.207">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_duration" class="form-label">Transit Duration [hrs]</label>
+                                <input type="number" class="form-control" id="koi_duration" name="koi_duration" 
+                                       value="3.793" step="any" placeholder="3.793">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_duration_err1" class="form-label">Transit Duration Upper Unc. [hrs]</label>
+                                <input type="number" class="form-control" id="koi_duration_err1" name="koi_duration_err1" 
+                                       value="0.142" step="any" placeholder="0.142">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_duration_err2" class="form-label">Transit Duration Lower Unc. [hrs]</label>
+                                <input type="number" class="form-control" id="koi_duration_err2" name="koi_duration_err2" 
+                                       value="-0.142" step="any" placeholder="-0.142">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_depth" class="form-label">Transit Depth [ppm]</label>
+                                <input type="number" class="form-control" id="koi_depth" name="koi_depth" 
+                                       value="421.100" step="any" placeholder="421.100">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_depth_err1" class="form-label">Transit Depth Upper Unc. [ppm]</label>
+                                <input type="number" class="form-control" id="koi_depth_err1" name="koi_depth_err1" 
+                                       value="20.750" step="any" placeholder="20.750">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_depth_err2" class="form-label">Transit Depth Lower Unc. [ppm]</label>
+                                <input type="number" class="form-control" id="koi_depth_err2" name="koi_depth_err2" 
+                                       value="-20.750" step="any" placeholder="-20.750">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_prad" class="form-label">Planetary Radius [Earth radii]</label>
+                                <input type="number" class="form-control" id="koi_prad" name="koi_prad" 
+                                       value="2.390" step="any" placeholder="2.390">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_prad_err1" class="form-label">Planetary Radius Upper Unc. [Earth radii]</label>
+                                <input type="number" class="form-control" id="koi_prad_err1" name="koi_prad_err1" 
+                                       value="0.520" step="any" placeholder="0.520">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_prad_err2" class="form-label">Planetary Radius Lower Unc. [Earth radii]</label>
+                                <input type="number" class="form-control" id="koi_prad_err2" name="koi_prad_err2" 
+                                       value="-0.300" step="any" placeholder="-0.300">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_teq" class="form-label">Equilibrium Temperature [K]</label>
+                                <input type="number" class="form-control" id="koi_teq" name="koi_teq" 
+                                       value="878.000" step="any" placeholder="878.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_insol" class="form-label">Insolation Flux [Earth flux]</label>
+                                <input type="number" class="form-control" id="koi_insol" name="koi_insol" 
+                                       value="141.600" step="any" placeholder="141.600">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_insol_err1" class="form-label">Insolation Flux Upper Unc. [Earth flux]</label>
+                                <input type="number" class="form-control" id="koi_insol_err1" name="koi_insol_err1" 
+                                       value="72.830" step="any" placeholder="72.830">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_insol_err2" class="form-label">Insolation Flux Lower Unc. [Earth flux]</label>
+                                <input type="number" class="form-control" id="koi_insol_err2" name="koi_insol_err2" 
+                                       value="-40.260" step="any" placeholder="-40.260">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_model_snr" class="form-label">Model SNR</label>
+                                <input type="number" class="form-control" id="koi_model_snr" name="koi_model_snr" 
+                                       value="23.000" step="any" placeholder="23.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_tce_plnt_num" class="form-label">TCE Planet Number</label>
+                                <input type="number" class="form-control" id="koi_tce_plnt_num" name="koi_tce_plnt_num" 
+                                       value="1.000" step="any" placeholder="1.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_tce_delivname" class="form-label">TCE Delivery Name</label>
+                                <input type="number" class="form-control" id="koi_tce_delivname" name="koi_tce_delivname" 
+                                       value="0.000" step="any" placeholder="0.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_steff" class="form-label">Stellar Effective Temperature [K]</label>
+                                <input type="number" class="form-control" id="koi_steff" name="koi_steff" 
+                                       value="5767.000" step="any" placeholder="5767.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_steff_err1" class="form-label">Stellar Temp Upper Unc. [K]</label>
+                                <input type="number" class="form-control" id="koi_steff_err1" name="koi_steff_err1" 
+                                       value="157.000" step="any" placeholder="157.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_steff_err2" class="form-label">Stellar Temp Lower Unc. [K]</label>
+                                <input type="number" class="form-control" id="koi_steff_err2" name="koi_steff_err2" 
+                                       value="-160.000" step="any" placeholder="-160.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_slogg" class="form-label">Stellar Surface Gravity [log10(cm/s^2)]</label>
+                                <input type="number" class="form-control" id="koi_slogg" name="koi_slogg" 
+                                       value="4.438" step="any" placeholder="4.438">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_slogg_err1" class="form-label">Stellar Gravity Upper Unc. [log10(cm/s^2)]</label>
+                                <input type="number" class="form-control" id="koi_slogg_err1" name="koi_slogg_err1" 
+                                       value="0.070" step="any" placeholder="0.070">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_slogg_err2" class="form-label">Stellar Gravity Lower Unc. [log10(cm/s^2)]</label>
+                                <input type="number" class="form-control" id="koi_slogg_err2" name="koi_slogg_err2" 
+                                       value="-0.128" step="any" placeholder="-0.128">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_srad" class="form-label">Stellar Radius [Solar radii]</label>
+                                <input type="number" class="form-control" id="koi_srad" name="koi_srad" 
+                                       value="1.000" step="any" placeholder="1.000">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_srad_err1" class="form-label">Stellar Radius Upper Unc. [Solar radii]</label>
+                                <input type="number" class="form-control" id="koi_srad_err1" name="koi_srad_err1" 
+                                       value="0.251" step="any" placeholder="0.251">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_srad_err2" class="form-label">Stellar Radius Lower Unc. [Solar radii]</label>
+                                <input type="number" class="form-control" id="koi_srad_err2" name="koi_srad_err2" 
+                                       value="-0.111" step="any" placeholder="-0.111">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="ra" class="form-label">RA [decimal degrees]</label>
+                                <input type="number" class="form-control" id="ra" name="ra" 
+                                       value="292.261" step="any" placeholder="292.261">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="dec" class="form-label">Dec [decimal degrees]</label>
+                                <input type="number" class="form-control" id="dec" name="dec" 
+                                       value="43.678" step="any" placeholder="43.678">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="koi_kepmag" class="form-label">Kepler-band [mag]</label>
+                                <input type="number" class="form-control" id="koi_kepmag" name="koi_kepmag" 
+                                       value="14.520" step="any" placeholder="14.520">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Predict Exoplanet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div id="results" class="row mt-4" style="display: none;">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-3">
+                    <i class="fas fa-chart-bar me-2"></i>Prediction Results
+                </h4>
+                <div id="predictionResult"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add input validation for decimal places
+document.addEventListener('DOMContentLoaded', function() {
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+    
+    numberInputs.forEach(input => {
+        // Ensure step allows any decimal places
+        input.step = 'any';
+        
+        // Add event listener for better decimal handling
+        input.addEventListener('input', function(e) {
+            // Allow any number of decimal places - no restrictions
+            let value = e.target.value;
+            
+            // Only validate that it's a number, don't restrict decimal places
+            if (value && !isNaN(value)) {
+                e.target.value = value; // Keep full precision
+            }
+        });
+        
+        // Allow pasting values with any decimal precision
+        input.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                let value = e.target.value;
+                if (value && !isNaN(value)) {
+                    e.target.value = value; // Keep full precision
+                }
+            }, 0);
+        });
+    });
+});
+
+document.getElementById('manualForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    // Show loading
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...';
+    submitBtn.disabled = true;
+    
+    fetch('/predict_manual', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showResult(`<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>${data.error}</div>`);
+        } else {
+            const isExoplanet = data.prediction === 1;
+            const confidence = (data.probability * 100).toFixed(6);
+            const resultClass = isExoplanet ? 'alert-success' : 'alert-warning';
+            const icon = isExoplanet ? 'fas fa-star' : 'fas fa-times-circle';
+            const message = isExoplanet ? 'EXOPLANET DETECTED!' : 'Not an Exoplanet';
+            
+            showResult(`
+                <div class="alert ${resultClass}">
+                    <h5><i class="${icon} me-2"></i>${message}</h5>
+                    <p class="mb-0">Confidence Level: <strong>${confidence}%</strong></p>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="metric-card">
+                            <div class="metric-value">${confidence}%</div>
+                            <div class="text-muted">Confidence</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="metric-card">
+                            <div class="metric-value">${isExoplanet ? 'Yes' : 'No'}</div>
+                            <div class="text-muted">Exoplanet</div>
+                        </div>
+                    </div>
+                </div>
+            `);
+            
+            if (isExoplanet) {
+                // Show celebration
+                setTimeout(() => {
+                    alert('🌟 EXOPLANET DETECTED! 🌟');
+                }, 500);
+            }
+        }
+    })
+    .catch(error => {
+        showResult(`<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error: ${error.message}</div>`);
+    })
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
+function showResult(html) {
+    document.getElementById('predictionResult').innerHTML = html;
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+{% endblock %}
+

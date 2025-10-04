@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Exoplanet Prediction Model{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h1 class="display-4 mb-4">
+                    <i class="fas fa-rocket text-primary"></i>
+                    Exoplanet Prediction Model
+                </h1>
+                <p class="lead mb-4">Discover exoplanets using machine learning and Kepler space telescope data</p>
+                
+                <div class="row mt-5">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-keyboard fa-3x text-primary mb-3"></i>
+                                <h4>Manual Input</h4>
+                                <p class="text-muted">Enter exoplanet parameters manually with suggested values</p>
+                                <a href="/manual" class="btn btn-primary">
+                                    <i class="fas fa-edit me-2"></i>Start Manual Input
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                                <h4>CSV Upload</h4>
+                                <p class="text-muted">Upload CSV files for batch exoplanet analysis</p>
+                                <a href="/upload" class="btn btn-primary">
+                                    <i class="fas fa-file-csv me-2"></i>Upload CSV File
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-info-circle me-2"></i>About This Model
+                                </h5>
+                                <p class="card-text">
+                                    This exoplanet prediction model uses XGBoost machine learning to analyze 
+                                    Kepler Object of Interest (KOI) data and predict whether a candidate is a 
+                                    confirmed exoplanet. The model considers various stellar and planetary 
+                                    parameters including orbital period, transit depth, planetary radius, and more.
+                                </p>
+                                <div class="row text-center mt-3">
+                                    <div class="col-md-3">
+                                        <div class="metric-card">
+                                            <div class="metric-value">20+</div>
+                                            <div class="text-muted">Features</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="metric-card">
+                                            <div class="metric-value">XGBoost</div>
+                                            <div class="text-muted">Algorithm</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="metric-card">
+                                            <div class="metric-value">Kepler</div>
+                                            <div class="text-muted">Data Source</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="metric-card">
+                                            <div class="metric-value">High</div>
+                                            <div class="text-muted">Accuracy</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
